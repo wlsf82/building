@@ -491,6 +491,11 @@ export default function App() {
                 <div className="skyIcon moon" />
               </div>
 
+              <div className="pointsStat">
+                <span>Points</span>
+                <strong>{points}</strong>
+              </div>
+
               <div className="building" aria-label="Building">
                 <h1 className="buildingTitle">Hotel</h1>
                 <h2 className="buildingSubTitle">🌞 Emojis 🌝</h2>
@@ -541,6 +546,11 @@ export default function App() {
                     </div>
                   </div>
                 </div>
+              </div>
+
+              <div className="pointsStat">
+                <span>Points</span>
+                <strong>{points}</strong>
               </div>
             </div>
 

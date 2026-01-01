@@ -226,6 +226,26 @@ body[data-view='instructions'] .card {
   min-width: 0;
 }
 
+.pointsStat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  padding: 8px;
+  border-radius: 12px;
+  margin: 0 14px;
+  align-self: center;
+  height: fit-content;
+}
+
+.pointsStat span,
+.pointsStat strong {
+  line-height: 1.1;
+}
+
 .buildingWrap {
   display: flex;
   justify-content: center;
