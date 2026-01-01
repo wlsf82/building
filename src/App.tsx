@@ -29,6 +29,11 @@ type DoorDrop = {
   expiresAt: number
 }
 
+type DoorCollectFx = {
+  id: number
+  emoji: string
+}
+
 type View = 'welcome' | 'instructions' | 'game'
 type InstructionsReturnTo = 'welcome' | 'game'
 
@@ -111,6 +116,8 @@ export default function App() {
   const [elapsedSeconds, setElapsedSeconds] = useState(0)
   const [runKey, setRunKey] = useState(0)
 
+  const [doorCollectFx, setDoorCollectFx] = useState<DoorCollectFx | null>(null)
+
   const [fxParticles, setFxParticles] = useState<FxParticle[]>([])
 
   const intervalsRef = useRef<{ spawn?: number; cleanup?: number }>({})
@@ -122,6 +129,8 @@ export default function App() {
   const windowElsRef = useRef<Map<number, HTMLDivElement | null>>(new Map())
   const doorElRef = useRef<HTMLDivElement | null>(null)
   const nextFxIdRef = useRef(1)
+  const nextDoorCollectIdRef = useRef(1)
+  const doorCollectTimeoutRef = useRef<number | null>(null)
 
   const bombSeen = useMemo(() => grid.some((c) => c.active?.kind === 'bomb'), [grid])
 
@@ -355,6 +364,13 @@ export default function App() {
     setGameOver(false)
     setDoorDrop(null)
     setDoorMilestonesAwarded(0)
+    setDoorCollectFx(null)
+
+    if (doorCollectTimeoutRef.current) {
+      window.clearTimeout(doorCollectTimeoutRef.current)
+      doorCollectTimeoutRef.current = null
+    }
+
     setGrid(createInitialGrid())
     setRunKey((k) => k + 1)
   }
@@ -373,19 +389,29 @@ export default function App() {
     if (gameOver) return
     if (view !== 'game') return
 
-    if (doorDrop && doorDrop.expiresAt > Date.now()) {
-      spawnEmojiFireworks(doorDrop.emoji, doorElRef.current)
+    const now = Date.now()
+
+    if (!doorDrop) return
+    if (doorDrop.expiresAt <= now) {
+      setDoorDrop(null)
+      return
     }
 
-    const now = Date.now()
-    setDoorDrop((prev) => {
-      if (!prev) return prev
-      if (prev.expiresAt <= now) return null
+    // Animate the collection at the door.
+    spawnEmojiFireworks(doorDrop.emoji, doorElRef.current)
 
-      const delta = themedPoints(prev.points, theme)
-      setPoints((p) => p + delta)
-      return null
-    })
+    if (canAnimateFx()) {
+      const id = nextDoorCollectIdRef.current++
+      setDoorCollectFx({ id, emoji: doorDrop.emoji })
+
+      if (doorCollectTimeoutRef.current) window.clearTimeout(doorCollectTimeoutRef.current)
+      doorCollectTimeoutRef.current = window.setTimeout(() => {
+        setDoorCollectFx((prev) => (prev?.id === id ? null : prev))
+      }, 520)
+    }
+
+    setPoints((p) => p + themedPoints(doorDrop.points, theme))
+    setDoorDrop(null)
   }
 
   return (
@@ -511,6 +537,11 @@ export default function App() {
                       }}
                     >
                       {doorDrop ? <span className="doorItem">{doorDrop.emoji}</span> : null}
+                      {doorCollectFx ? (
+                        <span key={doorCollectFx.id} className="doorCollectFx" aria-hidden="true">
+                          {doorCollectFx.emoji}
+                        </span>
+                      ) : null}
                     </div>
                   </div>
                 </div>

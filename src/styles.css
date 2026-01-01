@@ -413,6 +413,7 @@ body[data-view='instructions'] .card {
   place-items: center;
   cursor: pointer;
   user-select: none;
+  position: relative;
 }
 
 .door:active {
@@ -426,6 +427,35 @@ body[data-view='instructions'] .card {
 .doorItem {
   font-size: clamp(18px, 3.2vw, 22px);
   line-height: 1;
+}
+
+.doorCollectFx {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  line-height: 1;
+  font-size: clamp(18px, 3.2vw, 22px);
+  pointer-events: none;
+  animation: doorCollect 520ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes doorCollect {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, calc(-50% - 22px)) scale(1.35);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .doorCollectFx {
+    display: none;
+  }
 }
 
 .footer {
