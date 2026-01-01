@@ -56,19 +56,27 @@ const DOOR_ITEMS: Array<{ emoji: string; points: number }> = [
   { emoji: '🎁', points: 10 },
   { emoji: '🪙', points: 15 },
   { emoji: '🔑', points: 8 },
+  { emoji: '❤️‍🩹', points: -10 },
   { emoji: '❄️', points: -12 },
-  { emoji: '❤️‍🩹', points: -10 }
+  { emoji: '🌡️', points: -15 },
 ]
 
 const SPAWNABLES: Spawnable[] = [
+  { kind: 'good', emoji: '🌟', points: 9 },
+  { kind: 'good', emoji: '✨', points: 8 },
+  { kind: 'good', emoji: '🎉', points: 7 },
   { kind: 'good', emoji: '💎', points: 5 },
   { kind: 'good', emoji: '🍀', points: 3 },
   { kind: 'good', emoji: '⭐️', points: 2 },
   { kind: 'good', emoji: '❤️', points: 1 },
+  { kind: 'bad', emoji: '🔥', points: -1 },
   { kind: 'bad', emoji: '💀', points: -2 },
   { kind: 'bad', emoji: '😭', points: -4 },
-  { kind: 'bad', emoji: '🔥', points: -1 },
-  { kind: 'bomb', emoji: '💣', points: 0 }
+  { kind: 'bad', emoji: '🫠', points: -5 },
+  { kind: 'bad', emoji: '🧟‍♂️', points: -7 },
+  { kind: 'bad', emoji: '🕷️', points: -8 },
+  { kind: 'bad', emoji: '🪳', points: -10 },
+  { kind: 'bomb', emoji: '💣', points: 0 },
 ]
 
 function randomInt(maxExclusive: number) {
