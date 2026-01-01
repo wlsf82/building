@@ -424,7 +424,7 @@ export default function App() {
               <ul className="screenList">
                 <li>Click a window to collect what appears.</li>
                 <li>Avoid the bomb — it ends the game.</li>
-                <li>Day theme adds points; night theme flips points.</li>
+                <li>Some emojis give points, others cost points—at night, it’s inverted.</li>
                 <li>Sometimes the door drops a bonus item.</li>
               </ul>
               <div className="screenActions">
